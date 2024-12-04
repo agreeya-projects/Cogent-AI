@@ -121,11 +121,12 @@ def get_recordby_id():
 @app.route('/get_record_by_column_name', methods=['GET'])
 @check_authorization
 def get_recordby_column_name():
-    table_name = request.args.get('table_name')
-    # client_id = int(request.args.get('clientid'))
-    client_id_val = request.args.get('clientid')
     try:
+        table_name = request.args.get('table_name')
+        client_id_val = request.args.get('clientid')
         client_id = int(client_id_val)
+        column_name = request.args.get('column_name')
+        column_value = request.args.get('column_value')
     except Exception as e:
         response_message = 'You were given the wrong parameter by them. Please try again with a valid parameter.'
         return {
@@ -134,8 +135,6 @@ def get_recordby_column_name():
             "status": 'failed',
             'status_code': RESOURCE_NOT_FOUND
         }, RESOURCE_NOT_FOUND
-    column_name = request.args.get('column_name')
-    column_value = request.args.get('column_value')
     data = db_instance.get_data_by_column_name(server_name, database_name, client_id,table_name, column_name, column_value)
     return data
 
@@ -143,11 +142,14 @@ def get_recordby_column_name():
 @app.route('/update_record_by_column', methods=['PUT'])
 @check_authorization
 def get_update_by_column_name():
-    table_name = request.args.get('table_name')
-    # client_id = int(request.args.get('clientid'))
-    client_id_val = request.args.get('clientid')
     try:
+        table_name = request.args.get('table_name')
+        client_id_val = request.args.get('clientid')
         client_id = int(client_id_val)
+        column_to_update = request.args.get('column_to_update')
+        new_value = request.args.get('new_value')
+        condition_column = request.args.get('condition_column')
+        condition_value = request.args.get('condition_value')
     except Exception as e:
         response_message = 'You were given the wrong parameter by them. Please try again with a valid parameter.'
         return {
@@ -156,10 +158,6 @@ def get_update_by_column_name():
             "status": 'failed',
             'status_code': RESOURCE_NOT_FOUND
         }, RESOURCE_NOT_FOUND
-    column_to_update = request.args.get('column_to_update')
-    new_value = request.args.get('new_value')
-    condition_column = request.args.get('condition_column')
-    condition_value = request.args.get('condition_value')
 
     data = db_instance.update_record_by_column(server_name, database_name, client_id,table_name, column_to_update, new_value, condition_column,
                                                condition_value)
@@ -197,8 +195,8 @@ def delete_recordby_id():
 @app.route('/merge_chunk_transcribe_text', methods=['GET'])
 @check_authorization
 def get_transcribe_sentiment():
-    client_id_val = request.args.get('clientid')
     try:
+        client_id_val = request.args.get('clientid')
         client_id = int(client_id_val)
     except Exception as e:
         response_message = 'You were given the wrong parameter by them. Please try again with a valid parameter.'
@@ -218,8 +216,8 @@ def get_transcribe_sentiment():
 @app.route('/get_client_master_configurations', methods=['GET'])
 def get_client_master_configurations():
     # Done
-    client_id_val = request.args.get('clientid')
     try:
+        client_id_val = request.args.get('clientid')
         client_id = int(client_id_val)
     except Exception as e:
         response_message = 'You were given the wrong parameter by them. Please try again with a valid parameter.'
@@ -358,8 +356,8 @@ def get_sentiment_data():
 @app.route('/get_all_configurations', methods=['GET'])
 def get_all_configurations():
     #  Dev Done
-    client_id_val = request.args.get('clientid')
     try:
+        client_id_val = request.args.get('clientid')
         client_id = int(client_id_val)
     except Exception as e:
         response_message = 'You were given the wrong parameter by them. Please try again with a valid parameter.'

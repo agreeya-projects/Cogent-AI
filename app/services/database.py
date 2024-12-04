@@ -29,7 +29,7 @@ class DataBaseClass:
     def get_all_configurations(self, server, database, client_id):
         try:
 
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -90,7 +90,7 @@ class DataBaseClass:
 
     def save_log_table_entry(self, server_name, database):
         try:
-            dns = f'mssql+pyodbc://{server_name}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server_name}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -112,7 +112,7 @@ class DataBaseClass:
             db_server = os.environ.get("SERVER_NAME")
             db_name = os.environ.get("DB_NAME")
             # db_name = 'AudioTrans'
-            dns = f'mssql+pyodbc://{db_server}/{db_name}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{db_server}/{db_name}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -135,7 +135,7 @@ class DataBaseClass:
             if is_child_thread:
                 model_updated = AudioTranscribeTracker
 
-            dns = f'mssql+pyodbc://{db_server}/{db_name}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{db_server}/{db_name}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -159,7 +159,7 @@ class DataBaseClass:
         try:
             db_server = self.global_utility.get_database_server_name()
             db_name = self.global_utility.get_database_name()
-            dns = f'mssql+pyodbc://{db_server}/{db_name}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{db_server}/{db_name}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             metadata = MetaData()
             with engine.begin() as connection:
@@ -177,7 +177,7 @@ class DataBaseClass:
 
     def get_audio_transcribe_table_data(self, server, database, client_id):
         try:
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -196,7 +196,7 @@ class DataBaseClass:
 
     def get_audio_transcribe_tracker_table_data(self, server, database, client_id, audio_parent_id):
         try:
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -206,7 +206,6 @@ class DataBaseClass:
             record_coll = []
             for result in records:
                 record_coll.append(result.toDict())
-            print(f"Records Length :- {len(records)}")
             return record_coll
         except Exception as e:
             session.close()
@@ -216,7 +215,7 @@ class DataBaseClass:
 
     def update_audio_transcribe_table(self, server_name, database_name, record_id, update_values):
         try:
-            dns = f'mssql+pyodbc://{server_name}/{database_name}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server_name}/{database_name}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -246,7 +245,7 @@ class DataBaseClass:
 
     def update_audio_transcribe_tracker_table(self, server_name, database_name, record_id, update_values):
         try:
-            dns = f'mssql+pyodbc://{server_name}/{database_name}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server_name}/{database_name}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -290,7 +289,7 @@ class DataBaseClass:
 
     def get_client_configurations(self, server, database, client_id, master_client_user):
         try:
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -313,14 +312,13 @@ class DataBaseClass:
 
     def get_oauth_access_token(self, server, database, user_name, secret_key):
         try:
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
             records = session.query(Client).filter(
                 (Client.ClientUserName == user_name) & (Client.ClientPassword == secret_key) & (
                     Client.IsActive)).all()
-            print(f"Records Length :- {len(records)}")
             record_coll = []
             for result in records:
                 record_coll.append(result.toDict())
@@ -335,7 +333,7 @@ class DataBaseClass:
 
     def get_client_master_data(self, server, database, client_id):
         try:
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
@@ -381,14 +379,13 @@ class DataBaseClass:
         try:
             success = True
             error_message = None
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
             record = session.query(AuthTokenManagement).filter(
                 (AuthTokenManagement.UserName == user_name) & (AuthTokenManagement.ClientId == client_id) & (
                     Client.IsActive)).all()
-            print(f"Records Length :- {len(record)}")
             if len(record) > 0:
                 result = self.global_utility.get_configuration_by_column(record)
                 token = self.global_utility.get_list_array_value(result,
@@ -448,7 +445,6 @@ class DataBaseClass:
         try:
             secret_key = secrets.token_bytes(32)
             hex_key = secret_key.hex()
-            print(f"Generated secret key: {hex_key}")
             SECRET_KEY = hex_key
 
             # Generate a JWT token with an expiry time of 1 hour
@@ -465,7 +461,6 @@ class DataBaseClass:
                 session.commit()
             self.logger.info(f"Record inserted successfully. ID: {record.Id}")
             # return record
-            print("Generated token:", record.Id)
         except Exception as e:
             self.logger.error(f"An error occurred in update_transcribe_text: {e}")
         finally:
@@ -473,14 +468,13 @@ class DataBaseClass:
 
     def get_connection_string(self, server, database, client_id):
         try:
-            dns = f'mssql+pyodbc://{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server'
+            dns = f'mssql+pyodbc://{server}/{database}?driver={os.environ.get("Odbc_Driver")}'
             engine = create_engine(dns)
             Session = sessionmaker(bind=engine)
             session = Session()
             records = session.query(MasterConnectionString).filter(
                 (MasterConnectionString.ClientId == client_id) &  (
                     MasterConnectionString.IsActive)).all()
-            print(f"Records Length :- {len(records)}")
             record_coll = []
             for result in records:
                 record_coll.append(result.toDict())
